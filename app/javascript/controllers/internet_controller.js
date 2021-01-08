@@ -51,7 +51,7 @@ export default class extends Controller {
             },
         }
 
-        fetch("/api/internet/is_enabled?" + new URLSearchParams({id}), params)
+        fetch("/api/internet/status?" + new URLSearchParams({id}), params)
             .then(response => {
                 if (!response.ok)
                     throw new Error(`Can not load '${id}' button state!`)

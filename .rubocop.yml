@@ -1,0 +1,30 @@
+require: rubocop-rails
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/**/*'
+    - 'config/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/bundle/**/*'
+    - 'Rakefile'
+    - 'config.ru'
+    - 'Gemfile'
+
+Rails/HelperInstanceVariable:
+  Exclude:
+    - 'app/helpers/layout_helper.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/BlockComments:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'

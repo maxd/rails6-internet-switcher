@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 RSpec.context Api::InternetController do
   before(:each) do
-    allow(Rails.application.credentials).to receive(:device_ids_to_comments).and_return({ipad: 'iPad'})
+    allow(Rails.application.credentials).to receive(:device_ids_to_comments).and_return({ ipad: 'iPad' })
     allow(Rails.application.credentials).to receive(:mikrotik_api).and_return({
                                                                                 host: '192.168.1.1',
                                                                                 user: 'user',
@@ -15,18 +17,19 @@ RSpec.context Api::InternetController do
     it { expect(response).to eq(message: 'Unknown device id') }
   end
 
-  context 'GET is_enabled' do
+  context 'GET status' do
     shared_examples 'Internet test' do |enabled:|
       before do
         mikrotik_api = double('Mikrotik API')
         expect(mikrotik_api).to receive(:open).with(no_args)
-        expect(mikrotik_api).to receive(:find_address).with('iPad').and_return(OpenStruct.new(id: '*1', enabled: !enabled))
+        expect(mikrotik_api).to receive(:find_address).with('iPad')
+                                                      .and_return(OpenStruct.new(id: '*1', enabled: !enabled))
         expect(mikrotik_api).to receive(:close).with(no_args)
 
         allow(MikrotikApi).to receive(:new).and_return(mikrotik_api)
       end
 
-      subject { get :is_enabled, params: {id: :ipad} }
+      subject { get :status, params: { id: :ipad } }
 
       let(:response) { JSON.parse(subject.body).deep_symbolize_keys }
 
@@ -38,7 +41,7 @@ RSpec.context Api::InternetController do
     it_behaves_like 'Internet test', enabled: false
 
     it_behaves_like 'unknown device id' do
-      subject { get :is_enabled, params: {id: :unknown} }
+      subject { get :status, params: { id: :unknown } }
     end
   end
 
@@ -47,14 +50,15 @@ RSpec.context Api::InternetController do
       before do
         mikrotik_api = double('Mikrotik API')
         expect(mikrotik_api).to receive(:open).with(no_args)
-        expect(mikrotik_api).to receive(:find_address).with('iPad').and_return(OpenStruct.new(id: '*1', enabled: enable))
+        expect(mikrotik_api).to receive(:find_address).with('iPad')
+                                                      .and_return(OpenStruct.new(id: '*1', enabled: enable))
         expect(mikrotik_api).to receive(:disable_address).with('*1', enable).and_return(enable)
         expect(mikrotik_api).to receive(:close).with(no_args)
 
         allow(MikrotikApi).to receive(:new).and_return(mikrotik_api)
       end
 
-      subject { get :enable, params: {id: :ipad, enable: enable} }
+      subject { get :enable, params: { id: :ipad, enable: enable } }
 
       let(:response) { JSON.parse(subject.body).deep_symbolize_keys }
 
@@ -66,7 +70,7 @@ RSpec.context Api::InternetController do
     it_behaves_like 'enable/disable Internet', enable: false
 
     it_behaves_like 'unknown device id' do
-      subject { get :enable, params: {id: :unknown, enable: true} }
+      subject { get :enable, params: { id: :unknown, enable: true } }
     end
   end
 end

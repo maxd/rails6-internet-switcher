@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 RSpec.context InternetController do
   before(:each) do
-    allow(Rails.application.credentials).to receive(:device_ids_to_comments).and_return({ipad: 'iPad'})
+    allow(Rails.application.credentials).to receive(:device_ids_to_comments).and_return({ ipad: 'iPad' })
   end
 
   context 'GET index' do

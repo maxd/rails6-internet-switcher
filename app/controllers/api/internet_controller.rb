@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Api
   class InternetController < Api::ApiController
-    def is_enabled
+    def status
       id = params[:id]
 
-      enabled = InternetService.is_internet_enabled?(id)
+      enabled = InternetService.internet_enabled?(id)
 
       render json: { enabled: enabled }
     end

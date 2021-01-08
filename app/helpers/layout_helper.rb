@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LayoutHelper
   def title(value = nil)
     @layout_title ||= 'Internet Switcher'
@@ -18,7 +20,7 @@ module LayoutHelper
     if layout.instance_of? String
       layout
     else
-      layout.virtual_path.split('/')[1..-1].join('-')
+      layout.virtual_path.split('/')[1..].join('-')
     end
   end
 end

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class MikrotikApi
   def initialize(host:, user:, password:, verbose: false)
     @host = host
     @user = user
     @password = password
 
-    MTik::verbose = verbose
+    MTik.verbose = verbose
   end
 
   def open
@@ -21,11 +23,11 @@ class MikrotikApi
   end
 
   def find_address(comment)
-    raise StandardError.new("Connection closed!") unless @connection
+    raise StandardError, 'Connection closed!' unless @connection
 
-    response = @connection.get_reply("/ip/firewall/address-list/print", "?comment=#{comment}")
+    response = @connection.get_reply('/ip/firewall/address-list/print', "?comment=#{comment}")
     body = response.find_sentence('!re')
-    raise StandardError.new('Address not found') unless body
+    raise StandardError, 'Address not found' unless body
 
     id = body['.id']
     enabled = !ActiveModel::Type::Boolean.new.cast(body['disabled'])
@@ -34,13 +36,12 @@ class MikrotikApi
   end
 
   def disable_address(address_id, disable)
-    raise StandardError.new("Connection closed!") unless @connection
+    raise StandardError, 'Connection closed!' unless @connection
 
     response = @connection.get_reply('/ip/firewall/address-list/set', "=.id=#{address_id}", "=disabled=#{disable}")
     trap = response.find_sentence('!trap')
-    raise StandardError.new(trap['message']) if trap
+    raise StandardError, trap['message'] if trap
 
     disable
   end
-
 end

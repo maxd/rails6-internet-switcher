@@ -1,11 +1,11 @@
-class InternetService
+# frozen_string_literal: true
 
+class InternetService
   @device_ids_to_comments = Rails.application.credentials.device_ids_to_comments.with_indifferent_access
 
   class << self
-
-    def is_internet_enabled?(device_id)
-      raise StandardError.new('Unknown device id') unless @device_ids_to_comments.has_key?(device_id)
+    def internet_enabled?(device_id)
+      raise StandardError, 'Unknown device id' unless @device_ids_to_comments.key?(device_id)
 
       connect_to_api do |api|
         address = api.find_address(@device_ids_to_comments[device_id])
@@ -14,7 +14,7 @@ class InternetService
     end
 
     def enable_internet(device_id, enable)
-      raise StandardError.new('Unknown device id') unless @device_ids_to_comments.has_key?(device_id)
+      raise StandardError, 'Unknown device id' unless @device_ids_to_comments.key?(device_id)
 
       connect_to_api do |api|
         address = api.find_address(@device_ids_to_comments[device_id])
@@ -35,6 +35,5 @@ class InternetService
         api.close
       end
     end
-
   end
 end
