@@ -1,0 +1,1 @@
+import "./fomantic/semantic.css"

@@ -1,3 +1,14 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root to: 'internet#index'
+
+  namespace :api do
+    resource :internet, controller: :internet, only: [] do
+      member do
+        get :is_enabled
+        post :enable
+      end
+    end
+  end
+
+  resource :internet, controller: :internet, only: [ :index ]
 end

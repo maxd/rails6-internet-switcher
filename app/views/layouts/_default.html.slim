@@ -1,0 +1,18 @@
+doctype html
+html lang="en"
+  head
+    meta charset='utf-8'
+    title= title
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    - if Rails.env.development? || Rails.env.staging?
+      meta name="robots" content="noindex, nofollow"
+    = favicon_link_tag '/favicon.ico'
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    == yield :page_header
+
+  body class=body_class
+    == yield
+
+    == yield :page_footer

@@ -1,0 +1,5 @@
+.ui.centered.page.grid data-controller="internet"
+  - @buttons.each do |button|
+    .row
+      .center.aligned.column
+        button.fluid.ui.huge.button id=button.id data-action="internet#toggleInternet" data-id=button.id data-name=button.name data-is-internet-enabled=false disabled=true N/A
