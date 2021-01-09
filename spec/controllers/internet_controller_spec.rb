@@ -6,9 +6,22 @@ RSpec.context InternetController do
   end
 
   context 'GET index' do
-    subject { get :index }
+    context 'unauthenticated' do
+      subject { get :index }
 
-    it { is_expected.to have_http_status(:success) }
-    it { is_expected.to render_template('index') }
+      it { is_expected.to have_http_status(:found) }
+      it { is_expected.to redirect_to(new_user_session_path) }
+    end
+
+    context 'authenticated' do
+      before do
+        sign_in create(:user)
+      end
+
+      subject { get :index }
+
+      it { is_expected.to have_http_status(:success) }
+      it { is_expected.to render_template('index') }
+    end
   end
 end

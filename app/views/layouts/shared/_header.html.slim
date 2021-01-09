@@ -2,3 +2,6 @@
   .header.item
     i.laptop.house.icon
     = title
+
+  .right.menu
+    = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'item'

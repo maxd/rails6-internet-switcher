@@ -5,6 +5,14 @@ RSpec.context InternetController, js: true do
     driven_by(:selenium, using: :headless_firefox)
   end
 
+  before do
+    ActionController::Base.allow_forgery_protection = true
+  end
+
+  after do
+    ActionController::Base.allow_forgery_protection = false
+  end
+
   before(:each) do
     allow(Rails.application.credentials).to receive(:device_ids_to_comments).and_return({ ipad: 'iPad' })
     allow(Rails.application.credentials).to receive(:mikrotik_api).and_return({
@@ -26,20 +34,16 @@ RSpec.context InternetController, js: true do
         allow(MikrotikApi).to receive(:new).and_return(mikrotik_api)
       end
 
-      subject! { visit '/' }
+      subject! do
+        sign_in create(:user)
+
+        visit '/'
+      end
 
       it { expect(page).to have_text("iPad - Internet #{enabled ? 'Enabled' : 'Disabled'}") }
     end
 
     shared_examples 'toggle Internet' do |enabled:|
-      before do
-        ActionController::Base.allow_forgery_protection = true
-      end
-
-      after do
-        ActionController::Base.allow_forgery_protection = false
-      end
-
       before(:each) do
         mikrotik_api = double('Mikrotik API')
         expect(mikrotik_api).to receive(:open).with(no_args).ordered
@@ -57,12 +61,20 @@ RSpec.context InternetController, js: true do
       end
 
       subject! do
+        sign_in create(:user)
+
         visit '/'
 
         click_button 'ipad'
       end
 
       it { expect(page).to have_text("iPad - Internet #{enabled ? 'Disabled' : 'Enabled'}") }
+    end
+
+    context 'authentication required' do
+      subject! { visit '/' }
+
+      it { expect(page).to have_text('You need to sign in or sign up before continuing.') }
     end
 
     context 'with enabled Internet' do

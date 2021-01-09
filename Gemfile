@@ -31,6 +31,12 @@ gem 'slim', '~> 4.1.0'
 # Mikrotik API client
 gem 'mtik', '~> 4.1.2'
 
+# Authentication
+gem 'devise', '~> 4.7.3'
+
+# Form builder
+gem 'simple_form', '~> 5.0.3'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
@@ -65,7 +71,7 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
 
-  # WebDriver ()for Capybara)
+  # WebDriver (for Capybara)
   gem 'rexml' # FYI: workaround for https://github.com/SeleniumHQ/selenium/issues/9001
   gem 'selenium-webdriver'
 
@@ -73,6 +79,9 @@ group :test do
   gem 'webdrivers', '~> 4.4.2'
 
   gem 'rails-controller-testing', '~> 1.0.5'
+
+  # Factory Bot (aka Factory Girl) test framework
+  gem 'factory_bot_rails', '~> 6.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

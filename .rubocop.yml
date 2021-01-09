@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'config/**/*'
+    - 'db/**/*'
     - 'node_modules/**/*'
     - 'vendor/bundle/**/*'
     - 'Rakefile'
@@ -28,3 +29,6 @@ Style/TrailingCommaInHashLiteral:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+Rails/FilePath:
+  Enabled: false

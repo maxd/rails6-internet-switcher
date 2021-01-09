@@ -1,0 +1,16 @@
+.ui.middle.aligned.four.column.centered.grid style="height: 100%"
+  .column
+    h2.ui.header.center.aligned
+      .content= title
+
+    = render partial: '/shared/alerts'
+
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .ui.stacked.segment
+        = f.input :email, required: false, autofocus: true
+        = f.input :password, required: false
+
+        - if devise_mapping.rememberable?
+          = f.input :remember_me, as: :boolean, wrapper: :semantic_ui_checkbox
+
+        = f.button :submit, 'Log In', data: { disable_with: 'Log In...' }

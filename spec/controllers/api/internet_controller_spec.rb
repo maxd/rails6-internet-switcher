@@ -10,7 +10,15 @@ RSpec.context Api::InternetController do
                                                                               })
   end
 
+  shared_examples 'authentication required' do
+    it { is_expected.to have_http_status(:unauthorized) }
+  end
+
   shared_examples 'unknown device id' do
+    before do
+      sign_in create(:user)
+    end
+
     let(:response) { JSON.parse(subject.body).deep_symbolize_keys }
 
     it { is_expected.to have_http_status(:internal_server_error) }
@@ -27,6 +35,8 @@ RSpec.context Api::InternetController do
         expect(mikrotik_api).to receive(:close).with(no_args)
 
         allow(MikrotikApi).to receive(:new).and_return(mikrotik_api)
+
+        sign_in create(:user)
       end
 
       subject { get :status, params: { id: :ipad } }
@@ -35,6 +45,10 @@ RSpec.context Api::InternetController do
 
       it { is_expected.to have_http_status(:success) }
       it { expect(response).to eq(enabled: enabled) }
+    end
+
+    it_behaves_like 'authentication required' do
+      subject { get :status, params: { id: :ipad } }
     end
 
     it_behaves_like 'Internet test', enabled: true
@@ -56,6 +70,8 @@ RSpec.context Api::InternetController do
         expect(mikrotik_api).to receive(:close).with(no_args)
 
         allow(MikrotikApi).to receive(:new).and_return(mikrotik_api)
+
+        sign_in create(:user)
       end
 
       subject { get :enable, params: { id: :ipad, enable: enable } }
@@ -64,6 +80,10 @@ RSpec.context Api::InternetController do
 
       it { is_expected.to have_http_status(:success) }
       it { expect(response).to eq(enabled: enable) }
+    end
+
+    it_behaves_like 'authentication required' do
+      subject { get :enable, params: { id: :ipad, enable: true } }
     end
 
     it_behaves_like 'enable/disable Internet', enable: true
