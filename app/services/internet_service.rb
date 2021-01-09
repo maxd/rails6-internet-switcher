@@ -5,7 +5,7 @@ class InternetService
 
   class << self
     def internet_enabled?(device_id)
-      raise StandardError, 'Unknown device id' unless @device_ids_to_comments.key?(device_id)
+      raise ValidationError, 'Unknown device id' unless @device_ids_to_comments.key?(device_id)
 
       connect_to_api do |api|
         address = api.find_address(@device_ids_to_comments[device_id])
@@ -14,7 +14,7 @@ class InternetService
     end
 
     def enable_internet(device_id, enable)
-      raise StandardError, 'Unknown device id' unless @device_ids_to_comments.key?(device_id)
+      raise ValidationError, 'Unknown device id' unless @device_ids_to_comments.key?(device_id)
 
       connect_to_api do |api|
         address = api.find_address(@device_ids_to_comments[device_id])
