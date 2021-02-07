@@ -1,0 +1,6 @@
+= turbo_frame_tag device.id do
+  = button_to "#{device.name} - Internet #{ device.internet_enabled? ? 'Enabled' : 'Disabled' }",
+          enable_internet_path(id: device.id, enable: !device.internet_enabled?),
+          id: device.id,
+          class: [:fluid, :ui, :huge, :button, device.internet_enabled? ? :green : :red],
+          remote: true

@@ -4,9 +4,8 @@
 // that code so it'll be compiled.
 
 import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
+import * as Turbo from "@hotwired/turbo"
 
 Rails.start()
-Turbolinks.start()
 
 import "controllers"

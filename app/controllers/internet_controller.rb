@@ -2,6 +2,16 @@
 
 class InternetController < ApplicationController
   def index
-    @buttons = Rails.application.credentials.device_ids_to_comments.map { |k, v| OpenStruct.new(id: k, name: v) }
+    @devices = DevicesService.devices
+  end
+
+  def enable
+    id = params[:id]
+    enable = ActiveModel::Type::Boolean.new.cast(params[:enable])
+
+    device = DevicesService.by_id(id) or raise ActionController::RoutingError, 'Device not found'
+    device.enable_internet!(enable)
+
+    render partial: 'device', locals: { device: device }
   end
 end
